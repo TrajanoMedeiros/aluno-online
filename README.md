@@ -2,74 +2,70 @@
 
 Sistema de gestão escolar simples para o gerenciamento de registros de alunos e professores, desenvolvido como trabalho acadêmico utilizando **Spring Boot 3** e **PostgreSQL**.
 
-## 🚀 Funcionalidades
+---
 
-O projeto consiste em um **CRUD** completo para as seguintes entidades:
+## 📖 Explicação do Projeto
+A **Aluno Online API** é uma plataforma de backend voltada para a gestão de cadastros básicos de uma instituição de ensino. O objetivo é permitir que administradores realizem operações de criação, consulta, atualização e remoção (CRUD) de alunos e professores de forma rápida e eficiente através de uma interface REST.
 
-*   **Alunos**: Cadastro, listagem, atualização de dados e remoção.
-*   **Professores**: Cadastro, listagem, atualização de dados e remoção.
+## 🏗️ Arquitetura Utilizada
+O projeto foi desenvolvido seguindo o padrão de **Arquitetura em Camadas (Multitier Architecture)**, garantindo a separação de responsabilidades:
 
-## 🛠️ Tecnologias Utilizadas
+1.  **Camada de Modelo (Entities)**: Define a estrutura dos dados que são persistidos no banco.
+2.  **Camada de Repositório (Repositories)**: Interface de comunicação direta com o banco de dados via Spring Data JPA.
+3.  **Camada de Serviço (Services)**: Onde reside a lógica de negócio da aplicação.
+4.  **Camada de Controle (Controllers)**: Responsável por gerenciar as rotas da API e as requisições HTTP.
 
-*   **Linguagem**: Java 21
-*   **Framework**: Spring Boot 3.4.3
-*   **Banco de Dados**: PostgreSQL
-*   **Gerenciador de Dependências**: Maven
+---
+
+## 🔍 Detalhamento do Código
+
+*   **`Aluno` / `Professor` (Models)**: Classes que utilizam as anotações do JPA (`@Entity`) para mapear as tabelas no PostgreSQL. O uso do **Lombok** simplifica o código, gerando Getters e Setters automaticamente.
+*   **`AlunoRepository` / `ProfessorRepository`**: Interfaces que estendem o `JpaRepository`, permitindo operações complexas de banco de dados sem a necessidade de escrever SQL manualmente.
+*   **`AlunoService` / `ProfessorService`**: Classes anotadas com `@Service` que encapsulam as regras de negócio antes dos dados serem enviados ao repositório.
+*   **`AlunoController` / `ProfessorController`**: Gerenciam os protocolos HTTP (POST, GET, PUT, DELETE). Utilizamos a anotação `@RequestBody` para transformar o JSON enviado pelo cliente em objetos Java.
+
+---
 
 ## ⚙️ Como Executar
 
-### 1. Criar o Banco de Dados
-No terminal, execute o comando para criar o banco que o projeto espera:
-```bash
-psql -U postgres -c "CREATE DATABASE \"aluno-online\";"
-```
+1.  **Banco de Dados**: Certifique-se de ter o PostgreSQL rodando e crie o banco:
+    ```bash
+    psql -U postgres -c "CREATE DATABASE \"aluno-online\";"
+    ```
+2.  **Configuração**: Ajuste a senha em `src/main/resources/application.properties`.
+3.  **Execução**:
+    ```bash
+    ./mvnw spring-boot:run
+    ```
+    *A API estará disponível em: `http://localhost:8081`*
 
-### 2. Configurar Propriedades
-Verifique o arquivo `src/main/resources/application.properties` e ajuste a senha do seu PostgreSQL:
-```properties
-spring.datasource.password=sua_senha
-```
+---
 
-### 3. Rodar a Aplicação
-Execute o comando abaixo na raiz do projeto:
-```bash
-./mvnw spring-boot:run
-```
-O servidor iniciará na porta **8081**: `http://localhost:8081`
+## 📸 Evidências de Testes
 
-## 📸 Como Testar (Insomnia/Postman)
+### **Testes no Insomnia (Requisições)**
 
-### **Rotas de Alunos**
-*   `POST /aluno/create`: Criar novo aluno.
-*   `GET /aluno/`: Listar todos os alunos.
-*   `GET /aluno/{id}`: Buscar aluno pelo ID.
-*   `PUT /aluno/update/{id}`: Atualizar dados de um aluno.
-*   `DELETE /aluno/delete/{id}`: Remover um aluno.
+#### Cadastro de Aluno (POST)
+![Cadastro de Aluno](assets/InsertAlunoInsomnia.png)
 
-**Exemplo de JSON para Cadastro:**
-```json
-{
-  "name": "João da Silva",
-  "email": "joao@email.com",
-  "cpf": "111.222.333-44"
-}
-```
+#### Listagem de Alunos (GET)
+![Listagem de Alunos](assets/GetAlunoInsomnia.png)
 
-### **Rotas de Professores**
-*   `POST /professor/create`: Criar novo professor.
-*   `GET /professor/`: Listar todos os professores.
-*   `GET /professor/{id}`: Buscar professor pelo ID.
-*   `PUT /professor/update/{id}`: Atualizar professor.
-*   `DELETE /professor/delete/{id}`: Remover professor.
+#### Cadastro de Professor (POST)
+![Cadastro de Professor](assets/POSTProfessorInsomnia.png)
 
-**Exemplo de JSON para Cadastro:**
-```json
-{
-  "name": "Prof. Wilson",
-  "email": "wilson@email.com",
-  "cpf": "999.888.777-66"
-}
-```
+#### Listagem de Professores (GET)
+![Listagem de Professores](assets/GetProfessorInsomnia.png)
+
+---
+
+### **Visualização no DBeaver (Banco de Dados)**
+
+#### Tabela de Alunos
+![Tabela Alunos](assets/SelectAluno.png)
+
+#### Tabela de Professores
+![Tabela Professores](assets/SelectProfessor.png)
 
 ---
 *Desenvolvido por Artur Medeiros para fins acadêmicos.*
